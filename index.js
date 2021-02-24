@@ -1,3 +1,5 @@
+// Notes: World GeoJson adapted from https://bitbucket.org/voron-raven/maps/src/master/geojson/world.geojson
+// Code is modified from Leafletjs example: https://leafletjs.com/examples/choropleth/
 
 var map = L.map('map').setView([37.8, -96], 4);
 
@@ -86,6 +88,21 @@ function filterCountryByContinent(continent, countriesByContinent, countriesGeoJ
         type:"FeatureCollection",
         features:features,
     }
+}
+
+function AddCountientToGeoJson(countriesByContinent, countriesGeoJson) {
+
+    let updateGeoJson = countriesGeoJson.map((item) => {
+        let results = countriesByContinent.find(item => { 
+            return item.country === country; 
+        })
+        let continent = results.continent;
+
+        return { geometry:item.geometry, properties: { name:item.properties.name, continent:continent } }
+
+    })
+
+    // { geometry, properties: {name, country}, type:Feature }
 }
 
 processJson();
